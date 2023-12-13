@@ -50,7 +50,7 @@ int main()
         printf("3- Zamena najveceg i najmanjeg elementa (prema RAM)\n");
         printf("4- ispis svih racunara cija je frekv manja od 7.5\n");
         printf("5- Modifikacija sa najmanjim SID (jednistveni seriski br??) ,ram se uvecava 10 %\n");
-      //  printf("6- Sortiranje opadajuce po RAM i frekfenciji\n");
+        printf("6- Sortiranje opadajuce po RAM i frekfenciji\n");
         printf("7- Brojanje racunara koji imaju frekv 2.2 ili vecu\n");
         printf("8- Brebrojavaje suglasnika u nazivu procesora\n");
         printf("--------------------------------------\n");
