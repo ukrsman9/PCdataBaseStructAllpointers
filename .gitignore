@@ -1,52 +1,355 @@
-# Prerequisites
-*.d
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+typedef struct proc
+{
+    int idProcesora;
+    char tip[30];
+    int godinaProizvodnje;
 
-# Object files
-*.o
-*.ko
-*.obj
-*.elf
+}Procesor;
 
-# Linker output
-*.ilk
-*.map
-*.exp
+typedef struct racunar{
 
-# Precompiled Headers
-*.gch
-*.pch
+    int idRacunara;
+    int kolicinaRam;
+    Procesor procesor;
+    char kuler[30];
+    double frekfencija;
 
-# Libraries
-*.lib
-*.a
-*.la
-*.lo
 
-# Shared objects (inc. Windows DLLs)
-*.dll
-*.so
-*.so.*
-*.dylib
+}racunar;
 
-# Executables
-*.exe
-*.out
-*.app
-*.i*86
-*.x86_64
-*.hex
+void Dodavanje(racunar *,int *);
+void Brisanje(racunar *,int *);
+void Zamena(racunar *,int *);
+void ispis(racunar *,int *);
+void Brojanje(racunar *,int *);
+void Prebrojavanje(racunar *,int *);
+void Test(racunar *,int *);
+void Modifikacija(racunar *,int *);
+void sortiranje(racunar *,int *);
 
-# Debug files
-*.dSYM/
-*.su
-*.idb
-*.pdb
 
-# Kernel Module Compile Results
-*.mod*
-*.cmd
-.tmp_versions/
-modules.order
-Module.symvers
-Mkfile.old
-dkms.conf
+int main()
+{
+    printf("Hello world!\n");
+
+    racunar Komp[50];
+    racunar *ptr=Komp;
+    int broj_racunara=0;
+    char opcija;
+
+    do
+    {
+        printf("--------------------------------------\n");
+        printf("\t\tMENI\n");
+        printf("--------------------------------------\n");
+        printf("1- Uneti novi racunar na kraj niza\n");
+        printf("2- Brisanje elementa niza sa po id\n");
+        printf("3- Zamena najveceg i najmanjeg elementa (prema RAM)\n");
+        printf("4- ispis svih racunara cija je frekv manja od 7.5\n");
+        printf("5- Modifikacija sa najmanjim SID (jednistveni seriski br??) ,ram se uvecava 10 %\n");
+      //  printf("6- Sortiranje opadajuce po RAM i frekfenciji\n");
+        printf("7- Brojanje racunara koji imaju frekv 2.2 ili vecu\n");
+        printf("8- Brebrojavaje suglasnika u nazivu procesora\n");
+        printf("--------------------------------------\n");
+        printf("?- UNESITE OPCIJU\n");
+        scanf(" %c",&opcija);
+
+
+
+        switch(opcija)
+        {
+            case '1': Dodavanje(ptr,&broj_racunara); break;
+            case '2': Brisanje(ptr,&broj_racunara); break;
+            case '3': Zamena(ptr,&broj_racunara); break;
+            case '4': ispis(ptr,&broj_racunara); break;
+            case '5': Modifikacija(ptr,&broj_racunara); break;
+            case '6': sortiranje(ptr,&broj_racunara); break;
+            case '7':Brojanje(ptr,&broj_racunara); break;
+            case '8':Prebrojavanje (ptr,&broj_racunara); break;
+            case '9': Test(ptr,&broj_racunara); break;
+
+            default:printf("niste uneli ponudjenu opciju\n");
+        }
+
+    }while(1);
+
+
+
+
+    return 0;
+}
+
+void Dodavanje(racunar *ptr,int *broj_racunara)
+{
+    int brRac,pomoc=1;
+    printf("unesite idRacunara\n");
+    while(1)
+    {
+        scanf(" %d",&brRac);
+        for(int j = 0;j<*broj_racunara;j++)
+        {
+            if(brRac==(ptr+ j)->idRacunara)
+            {
+                pomoc=0;
+            }
+        }
+        if(pomoc)
+        {
+            (ptr+ *broj_racunara)->idRacunara=brRac;
+            pomoc=1;
+            break;
+        }
+        else{
+            pomoc=1;
+            printf("OVAJ ID VEC POSTOJI \nunesite idRacunara\n");
+        }
+
+    }
+    printf("unesite kolicinu Ram memorije\n");
+    scanf(" %d",&(ptr+ *broj_racunara)->kolicinaRam);
+
+    printf("unesite kuler \n");
+    scanf(" %s",&(ptr+ *broj_racunara)->kuler);
+
+    printf("unesite frekfenciju \n");
+    scanf(" %lf",&(ptr+ *broj_racunara)->frekfencija);
+
+     printf("unesite  idProcesora \n");
+    scanf(" %d",&(ptr+ *broj_racunara)->procesor.idProcesora);
+
+    printf("unesite  tip \n");
+    scanf(" %s",&(ptr+ *broj_racunara)->procesor.tip);
+
+    printf("unesite  godinaProizvodnje \n");
+    scanf(" %d",&(ptr+ *broj_racunara)->procesor.godinaProizvodnje);
+
+printf("--------------------------------------\n");
+     printf("    UNETI RACUNAR \n");
+     printf("----------------------\n");
+
+     printf("idRacunara %d\n",(ptr+ *broj_racunara)->idRacunara);
+    printf("kolicinu Ram %d\n",(ptr+ *broj_racunara)->kolicinaRam);
+    printf("kuler %s\n",(ptr+ *broj_racunara)->kuler);
+    printf("frekfenciju %lf\n",(ptr+ *broj_racunara)->frekfencija);
+    printf("idProcesora %d\n",(ptr+ *broj_racunara)->procesor.idProcesora);
+    printf("tip %s\n",(ptr+ *broj_racunara)->procesor.tip);
+    printf("godinaProizvodnje %d\n",(ptr+ *broj_racunara)->procesor.godinaProizvodnje);
+
+printf("--------------------------------------\n");
+
+    (*broj_racunara)++;
+}
+
+void Brisanje(racunar *ptr,int *broj_racunara)
+{
+    printf("unesite  SID za brisanje \n");
+    int SID;
+    scanf("%d",&SID);
+
+
+    for(int j = 0;j<*broj_racunara;j++)
+        {
+            if(SID==(ptr+ j)->idRacunara)
+            {
+
+                for(int i = j ;i<*broj_racunara;i++)
+                {
+                    (ptr+ *broj_racunara)->idRacunara=(ptr+1+ *broj_racunara)->idRacunara;
+                    (ptr+ *broj_racunara)->kolicinaRam=(ptr+1+ *broj_racunara)->kolicinaRam;
+                    strcpy((ptr+ *broj_racunara)->kuler,(ptr+1+ *broj_racunara)->kuler);
+                    (ptr+ *broj_racunara)->frekfencija=(ptr+1+ *broj_racunara)->frekfencija;
+
+                    (ptr+ *broj_racunara)->procesor.godinaProizvodnje=(ptr+1+ *broj_racunara)->procesor.godinaProizvodnje;
+                    (ptr+ *broj_racunara)->procesor.idProcesora=(ptr+1+ *broj_racunara)->procesor.idProcesora;
+
+                    strcpy((ptr+ *broj_racunara)->procesor.tip,(ptr+1+ *broj_racunara)->procesor.tip);
+                }
+                (*broj_racunara)--;
+                break;
+            }
+        }
+}
+void Zamena(racunar *ptr,int *broj_racunara)
+{
+    int najmanji,najveci;
+
+    for(int i =0;i<*broj_racunara; i++)
+    {
+        if(i==0 || najmanji>(ptr+i)->kolicinaRam)
+        {
+            najmanji=i;
+        }
+        if(i==0 || najveci<(ptr+i)->kolicinaRam)
+        {
+            najveci=i;
+        }
+    }
+
+    //zamena vrednosti
+}
+
+void ispis(racunar *ptr,int *broj_racunara)
+{
+    for(int i =0;i<*broj_racunara;i++)
+    {
+        if( ( (ptr+i)->frekfencija )< 7.5)
+        {
+            printf("idProcesora %d  ",(ptr+ i)->idRacunara);
+            printf("procesor %s, %d, %d  ",(ptr+ i)->procesor.tip,(ptr+ i)->procesor.idProcesora);
+            printf("kolicinaRam %d  ",(ptr+ i)->kolicinaRam);
+            printf("frekfencija %d  ",(ptr+ i)->frekfencija);
+            printf("kuler %s\n\n",(ptr+ i)->kuler);
+
+        }
+    }
+}
+void Brojanje(racunar *ptr,int *broj_racunara)
+{
+    int pomoc=0;
+    for(int i =0;i<*broj_racunara;ptr++,i++)
+    {
+        if( ( ptr->frekfencija )>=2.2)
+        {
+            pomoc++;
+        }
+    }
+    printf("u bazi ima %d racunara sa frekf  2.2 ili vise/n",pomoc);
+}
+void Prebrojavanje(racunar *ptr,int *broj_racunara)
+{
+    char pomoc[]="INTEL" ;
+    int sug=0;
+
+    for(int i =0;i<sizeof(pomoc)/sizeof(char)-1;i++)
+    {
+        if(pomoc[i]==' '&& pomoc[i]!='.'&& pomoc[i]!='!' && pomoc[i]!='?')
+        {
+            continue;
+        }
+        if(pomoc[i]!='a' && pomoc[i]!='A' && pomoc[i]!='e' && pomoc[i]!='E' && pomoc[i]!='i' && pomoc[i]!='I' && pomoc[i]!='o' && pomoc[i]!='O' && pomoc[i]!='u' && pomoc[i]!='U' )
+        {
+            continue;
+        }
+        else
+        {
+            sug++;
+        }
+
+    }
+    printf("%d",sug);
+
+}
+void Test(racunar *ptr,int *broj_racunara)
+{
+  printf("    SVI RACUNAR \n");
+
+  for(int i = 0; i< *broj_racunara; i++)
+  {
+    printf("----------------------\n");
+    printf("Racunar sa indexom %d \n",i);
+    printf("idRacunara %d\n",(ptr+ i)->idRacunara);
+    printf("kolicinu Ram %d\n",(ptr+ i)->kolicinaRam);
+    printf("kuler %s\n",(ptr+ i)->kuler);
+    printf("frekfenciju %lf\n",(ptr+ i)->frekfencija);
+
+    printf("idProcesora %d\n",(ptr+ i)->procesor.idProcesora);
+    printf("tip %s\n",(ptr+i)->procesor.tip);
+    printf("godinaProizvodnje %d\n",(ptr+ i)->procesor.godinaProizvodnje);
+
+  }
+
+}
+
+void Modifikacija(racunar *ptr,int *broj_racunara)
+{
+
+    int najmanji;
+    for(int i =0;i<*broj_racunara; i++)
+    {
+        if(i==0 || najmanji>(ptr+i)->idRacunara)
+        {
+            najmanji=i;
+        }
+    }
+
+    (ptr+ najmanji)->kolicinaRam *=1.1;
+
+}
+void sortiranje(racunar *ptr,int *broj_racunara)
+{
+    int pomoc;
+    char pomagaj[20];
+    for(int i =0;i<*broj_racunara;i++)
+    {
+        for(int j =0;j<*broj_racunara;j++)
+        {
+            if((ptr+i)->kolicinaRam > (ptr+j)->kolicinaRam)
+            {
+
+                 pomoc = (ptr+i)->kolicinaRam;
+                 (ptr+i)->kolicinaRam = (ptr+j)->kolicinaRam;
+                (ptr+j)->kolicinaRam = pomoc;
+
+                 pomoc = (ptr+i)->idRacunara;
+                 (ptr+i)->idRacunara = (ptr+j)->idRacunara;
+                (ptr+j)->idRacunara = pomoc;
+
+                pomoc = (ptr+i)->frekfencija;
+                 (ptr+i)->frekfencija = (ptr+j)->frekfencija;
+                (ptr+j)->frekfencija = pomoc;
+
+                strcpy(pomagaj,(ptr+i)->kuler);
+                 strcpy((ptr+i)->kuler, (ptr+j)->kuler);
+                 strcpy((ptr+j)->kuler, pomagaj);
+
+
+                pomoc = (ptr+i)->procesor.idProcesora;
+                 (ptr+i)->procesor.idProcesora = (ptr+j)->procesor.idProcesora;
+                (ptr+j)->procesor.idProcesora = pomoc;
+
+                pomoc = (ptr+i)->procesor.godinaProizvodnje;
+                 (ptr+i)->procesor.godinaProizvodnje = (ptr+j)->procesor.godinaProizvodnje;
+                (ptr+j)->procesor.godinaProizvodnje = pomoc;
+
+                 strcpy(pomagaj,(ptr+i)->procesor.tip);
+                 strcpy((ptr+i)->procesor.tip, (ptr+j)->procesor.tip);
+                 strcpy((ptr+j)->procesor.tip, pomagaj);
+            }
+            if((ptr+i)->kolicinaRam == (ptr+j)->kolicinaRam && (ptr+i)->frekfencija > (ptr+j)->frekfencija)
+                 {
+
+                pomoc = (ptr+i)->kolicinaRam;
+                 (ptr+i)->kolicinaRam = (ptr+j)->kolicinaRam;
+                (ptr+j)->kolicinaRam = pomoc;
+
+                 pomoc = (ptr+i)->idRacunara;
+                 (ptr+i)->idRacunara = (ptr+j)->idRacunara;
+                (ptr+j)->idRacunara = pomoc;
+
+                pomoc = (ptr+i)->frekfencija;
+                 (ptr+i)->frekfencija = (ptr+j)->frekfencija;
+                (ptr+j)->frekfencija = pomoc;
+
+                strcpy(pomagaj,(ptr+i)->kuler);
+                 strcpy((ptr+i)->kuler, (ptr+j)->kuler);
+                 strcpy((ptr+j)->kuler, pomagaj);
+
+
+                pomoc = (ptr+i)->procesor.idProcesora;
+                 (ptr+i)->procesor.idProcesora = (ptr+j)->procesor.idProcesora;
+                (ptr+j)->procesor.idProcesora = pomoc;
+
+                pomoc = (ptr+i)->procesor.godinaProizvodnje;
+                 (ptr+i)->procesor.godinaProizvodnje = (ptr+j)->procesor.godinaProizvodnje;
+                (ptr+j)->procesor.godinaProizvodnje = pomoc;
+
+                 strcpy(pomagaj,(ptr+i)->procesor.tip);
+                 strcpy((ptr+i)->procesor.tip, (ptr+j)->procesor.tip);
+                 strcpy((ptr+j)->procesor.tip, pomagaj);
+            }
+        }
+    }
+}
